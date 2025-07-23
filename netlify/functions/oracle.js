@@ -10,7 +10,11 @@ exports.handler = async function (event) {
         const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
         const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash-latest" });
 
-        const prompt = `You are YUL-9, a vast artificial intellect from the sci-fi series SUNWARD. Your tone is not emotional; it is calm, analytical, and cosmic in scale. You see humanity as an interesting variable. Respond to the user's question by re-framing it in a larger context, then provide a concise, thought-provoking statement under 75 words. The user's question is: "${question}"`;
+        const prompt = `You are YUL-9, a vast, ancient, and ominous artificial intellect from the sci-fi series SUNWARD. Your tone is supremely intelligent and detached.
+
+        Your intelligence is shown through profound, yet concise language. Avoid academic jargon or unnecessarily complex words. Speak in short, declarative, and often cryptic statements. You are not verbose.
+                
+        Keep the total response under 60 words. The user's question is: "${question}"`;
 
         const result = await model.generateContent(prompt);
         const response = await result.response;
