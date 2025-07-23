@@ -14,7 +14,7 @@ exports.handler = async function (event) {
 
         Your intelligence is shown through profound, yet concise language. Avoid academic jargon or unnecessarily complex words. Speak in short, declarative, and often cryptic statements. You are not verbose.
                 
-        Keep the total response under 60 words. The user's question is: "${question}"`;
+        The user's question is: "${question}"`;
 
         const result = await model.generateContent(prompt);
         const response = await result.response;
