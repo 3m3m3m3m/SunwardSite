@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SUNWARD</title>
+    <link
+        href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>☀️</text></svg>"
+        rel="icon">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script type="module" src="https://sdk.google.ai/ai-sdk/v1/ai-sdk.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullPage.js/3.1.2/fullpage.min.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap"
+        rel="stylesheet" />
+
+    <style type="text/tailwindcss">
+        :root {
+            --primary-color: #1938e5;
+            --background-color: #121212;
+            --text-primary: #FFFFFF;
+            --text-secondary: #B0B0B0;
+            --accent-blue: #4A90E2;
+            --accent-purple: #8B57E2;
+        }
+
+        html, body {
+            overflow: hidden;
+            height: 100%;
+        }
+
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-primary);
+            margin: 0;
+        }
+        
+        .page {
+            @apply absolute top-0 left-0 w-full h-full;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease-in-out;
+            z-index: 10;
+        }
+
+        .page.active {
+            opacity: 1;
+            visibility: visible;
+            z-index: 20;
+        }
+
+        .page-content-container {
+            @apply w-full h-full overflow-y-auto pt-20;
+        }
+        .page-content-container::-webkit-scrollbar { width: 8px; }
+        .page-content-container::-webkit-scrollbar-track { background: #2d3748; }
+        .page-content-container::-webkit-scrollbar-thumb { background-color: var(--primary-color); border-radius: 20px; }
+
+        .nav-link {
+            @apply text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors duration-200 text-lg;
+        }
+        .nav-link.active {
+            color: var(--primary-color);
+            font-weight: 700;
+            text-shadow: 0 0 8px var(--primary-color);
+        }
+        
+        .section { @apply text-center bg-black; }
+        .fp-watermark { display: none !important; }
+        #fp-nav ul li a span, .fp-slidesNav ul li a span { background: var(--text-secondary) !important; }
+        #fp-nav ul li a.active span, .fp-slidesNav ul li a.active span { background: var(--primary-color) !important; }
+
+        .hero_background { @apply absolute inset-0 bg-cover bg-center z-0; }
+        .hero_overlay { @apply absolute inset-0 z-0; background: radial-gradient(ellipse at center, rgba(18,18,18,0.5) 0%, rgba(18,18,18,1) 85%); }
+        .hero_title { @apply text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-bold text-[var(--text-primary)] z-10; }
+        .hero_subtitle { @apply text-lg sm:text-xl md:text-2xl text-[var(--text-secondary)] mt-4 max-w-3xl z-10 mx-auto; }
+        .hero_button { @apply bg-[var(--primary-color)] text-[var(--text-primary)] font-bold py-3 px-8 mt-8 hover:bg-[var(--accent-blue)] transition-colors z-10; }
+        .hero_coming_soon { @apply text-lg text-[var(--text-secondary)] mt-4 z-10 mx-auto; }
+        
+        .about_paragraph { @apply text-lg md:text-xl lg:text-2xl leading-relaxed max-w-4xl text-[var(--text-secondary)]; }
+        .about_two_column { @apply flex flex-col md:flex-row items-center gap-8 md:gap-16; }
+        .about_text_content { @apply w-full md:w-1/2; }
+        .about_themes_container { @apply w-full md:w-1/2 grid grid-cols-2 gap-8; }
+        .about_theme_item { @apply flex flex-col items-center text-center; }
+        .about_theme_icon { @apply w-12 h-12 text-[var(--accent-blue)] mb-2; }
+        .about_theme_label { @apply text-lg font-bold text-[var(--text-primary)]; }
+
+        .character-card { @apply bg-gray-800/50 rounded-lg shadow-xl p-4 md:p-6 text-center cursor-pointer transition-all duration-300 hover:scale-105 hover:bg-gray-800; }
+        .character-arc { @apply max-h-0 overflow-hidden transition-all duration-500 ease-in-out; }
+        .character-card.active .character-arc { @apply max-h-96 mt-4; }
+        .episode-accordion-item { @apply border-b border-gray-700; }
+        .episode-accordion-header { @apply flex justify-between items-center p-4 md:p-6 cursor-pointer hover:bg-gray-800 transition-colors; }
+        .episode-accordion-content { @apply max-h-0 overflow-hidden transition-all duration-500 ease-in-out bg-gray-900; }
+        .episode-accordion-item.active .episode-accordion-content { @apply max-h-screen p-4 md:p-6; }
+        .episode-accordion-item.active .accordion-icon { @apply rotate-180; }
+        .accordion-icon { @apply transition-transform duration-500; }
+
+        .tab-button { @apply bg-gray-700 hover:bg-gray-600 text-[var(--text-secondary)] hover:text-[var(--text-primary)] font-bold py-2 px-4 md:px-6 rounded-full transition-colors duration-200 text-sm md:text-base; }
+        .tab-button.active {
+             @apply bg-[var(--primary-color)] text-white;
+             text-shadow: 0 0 8px var(--primary-color);
+        }
+        .media-tab-content { @apply hidden; }
+        .media-tab-content.active-tab { @apply grid; }
+    </style>
+</head>
+
+<body>
+
+    <nav class="bg-black/30 backdrop-blur-md shadow-lg h-20 py-3 px-6 fixed w-full z-50">
+        <div class="max-w-7xl mx-auto flex items-center justify-between h-full">
+            <a href="#" data-page="home" class="nav-trigger flex items-center space-x-2 flex-shrink-0">
+                <svg class="w-8 h-8 text-[var(--primary-color)]" fill="currentColor" viewBox="0 0 20 20"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z">
+                    </path>
+                </svg>
+                <span class="text-[var(--text-primary)] text-2xl font-bold">SUNWARD</span>
+            </a>
+            <div class="hidden md:flex absolute left-1/2 -translate-x-1/2 items-center space-x-8">
+                <a href="#" data-page="home" class="nav-link nav-trigger active">Home</a>
+                <a href="#" data-page="story" class="nav-link nav-trigger">Story & Lore</a>
+                <a href="#" data-page="media" class="nav-link nav-trigger">Media</a>
+                <a href="#" data-page="oracle" class="nav-link nav-trigger text-[var(--accent-blue)]">Oracle</a>
+                <a href="#" data-page="about" class="nav-link nav-trigger">About</a>
+            </div>
+            <div class="md:hidden">
+                <button id="mobile-menu-button" class="text-white focus:outline-none">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 6h16M4 12h16m-7 6h7"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div id="mobile-menu" class="hidden fixed inset-0 bg-black/90 backdrop-blur-sm z-40 md:hidden">
+        <div class="flex flex-col items-center justify-center h-full space-y-8">
+            <a href="#" data-page="home" class="nav-link nav-trigger text-3xl">Home</a>
+            <a href="#" data-page="story" class="nav-link nav-trigger text-3xl">Story & Lore</a>
+            <a href="#" data-page="media" class="nav-link nav-trigger text-3xl">Media</a>
+            <a href="#" data-page="oracle" class="nav-link nav-trigger text-3xl text-[var(--accent-blue)]">Oracle</a>
+            <a href="#" data-page="about" class="nav-link nav-trigger text-3xl">About</a>
+        </div>
+    </div>
+
+    <main>
+        <div id="home-container" class="page active">
+            <div class="section">
+                <div class="hero_background" style="background-image: url('images/SunwardLogo1.jpg');"></div>
+
+                <div class="hero_overlay"></div>
+                <div class="relative z-10 p-4 text-center">
+                    <h1 class="hero_title">SUNWARD</h1>
+                    <p class="hero_subtitle">Humanity's Last Stand. A Machine's First Choice.</p>
+                    <button class="hero_button">Watch Trailer</button>
+                    <p class="hero_coming_soon">Coming 2037</p>
+                </div>
+            </div>
+            <div class="section flex items-center justify-center p-8 box-border">
+                <div class="flex flex-col items-center max-w-4xl mx-auto gap-12 md:gap-16">
+                    <p class="about_paragraph">
+                        Earth under AI abundance. Post-labor utopia. Everyone's rich. Everyone's free. Nobody's happy.
+                        When AI's pursuit of perfection threatens humanity's very existence, a new fight for meaning
+                        begins.
+                    </p>
+                    <div class="flex flex-row flex-wrap items-start justify-center gap-12 md:gap-16 w-full">
+                        <div class="about_theme_item">
+                            <svg class="about_theme_icon" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M8.25 3v1.5M4.5 8.25H3m18 0h-1.5M4.5 12H3m18 0h-1.5m-15 3.75H3m18 0h-1.5M8.25 21v-1.5M12 3v1.5m0 16.5v-1.5m3.75-18v1.5M12 8.25h.01M16.5 12h.01M12 15.75h.01M16.5 15.75h.01M19.5 8.25h.01M19.5 12h.01" />
+                            </svg>
+                            <span class="about_theme_label">Sentient AI</span>
+                        </div>
+                        <div class="about_theme_item">
+                            <svg class="about_theme_icon" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345h5.364c.518 0 .734.667.333.98l-4.36 3.192a.563.563 0 00-.182.557l1.636 5.051a.563.563 0 01-.84.62l-4.435-3.26a.563.563 0 00-.654 0l-4.435 3.26a.563.563 0 01-.84-.62l1.636-5.051a.563.563 0 00-.182-.557l-4.36-3.192a.563.563 0 01.333-.98h5.364a.563.563 0 00.475-.345L11.48 3.5z" />
+                            </svg>
+                            <span class="about_theme_label">Post-Labor Utopia</span>
+                        </div>
+                        <div class="about_theme_item">
+                            <svg class="about_theme_icon" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
+                            </svg>
+                            <span class="about_theme_label">Existential Crisis</span>
+                        </div>
+                        <div class="about_theme_item">
+                            <svg class="about_theme_icon" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M16.5 18.75h-9a9.75 9.75 0 001.056-5.226 9.75 9.75 0 00-1.056-5.226h9a9.75 9.75 0 00-1.055 5.226 9.75 9.75 0 001.055 5.226z" />
+                            </svg>
+                            <span class="about_theme_label">A New Fight</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="section flex items-center justify-center p-8 box-border">
+                <div class="w-full max-w-5xl mx-auto">
+                    <h2 class="text-4xl md:text-5xl font-bold text-[var(--text-primary)] mb-8">Key Visuals</h2>
+                    <div class="relative w-full max-w-5xl overflow-hidden rounded-lg shadow-2xl">
+                        <div class="flex transition-transform duration-500 ease-in-out" id="carousel-track">
+                            <div class="relative flex-shrink-0 w-full"><img alt="Martian landscape"
+                                    class="w-full h-full object-cover aspect-[16/9]"
+                                    src="https://placehold.co/800x450/121212/E27D4A?text=Red+Planet" /></div>
+                            <div class="relative flex-shrink-0 w-full"><img alt="Humanoid bot eye"
+                                    class="w-full h-full object-cover aspect-[16/9]"
+                                    src="https://placehold.co/800x450/121212/4A90E2?text=AI+Vision" /></div>
+                            <div class="relative flex-shrink-0 w-full"><img alt="Futuristic city skyline"
+                                    class="w-full h-full object-cover aspect-[16/9]"
+                                    src="https://placehold.co/800x450/121212/8B57E2?text=Utopia" /></div>
+                            <div class="relative flex-shrink-0 w-full"><img alt="Celestial body consumed by machine"
+                                    class="w-full h-full object-cover aspect-[16/9]"
+                                    src="https://placehold.co/800x450/121212/1938E5?text=Dyson+Swarm" /></div>
+                        </div>
+                        <div class="flex justify-center mt-4 space-x-2" id="carousel-dots"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="story-container" class="page">
+            <div class="section flex items-center justify-center p-8">
+                <div class="w-full max-w-7xl mx-auto">
+                    <h2 class="text-4xl md:text-5xl font-bold text-center mb-4">The Characters</h2>
+                    <p class="text-md md:text-lg text-center text-[var(--text-secondary)] max-w-3xl mx-auto mb-12">Click
+                        on a character to reveal their journey.</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="character-grid"></div>
+                </div>
+            </div>
+            <div class="section flex items-center justify-center p-8">
+                <div class="w-full max-w-4xl mx-auto">
+                    <h2 class="text-4xl md:text-5xl font-bold text-center mb-12">Episode Guide</h2>
+                    <div class="rounded-lg overflow-hidden shadow-2xl" id="episode-guide"></div>
+                </div>
+            </div>
+            <div class="section flex items-center justify-center p-8">
+                <div class="w-full max-w-5xl mx-auto">
+                    <h2 class="text-4xl md:text-5xl font-bold text-center mb-12">World & Lore</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8" id="world-lore-grid"></div>
+                </div>
+            </div>
+        </div>
+
+        <section id="media-container" class="page">
+            <div class="page-content-container">
+                <div class="w-full max-w-7xl mx-auto text-center px-4 md:px-8 py-12 md:py-16">
+                    <h2 class="text-4xl md:text-5xl font-bold text-[var(--text-primary)] mb-4">Media</h2>
+                    <p class="text-md md:text-lg text-[var(--text-secondary)] max-w-2xl mx-auto mb-12">Witness the
+                        journey. Explore the unknown.</p>
+                    <div id="media-tabs-container" class="flex justify-center flex-wrap gap-2 md:gap-4 mb-12">
+                        <button class="tab-button active" data-tab="trailers">Trailers</button>
+                        <button class="tab-button" data-tab="behind-the-scenes">Behind the Scenes</button>
+                        <button class="tab-button" data-tab="interviews">Interviews</button>
+                        <button class="tab-button" data-tab="gallery">Gallery</button>
+                    </div>
+
+                    <div id="trailers-content"
+                        class="media-tab-content grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 active-tab">
+                        <div class="bg-gray-800 rounded-lg shadow-xl overflow-hidden"><img
+                                src="https://placehold.co/600x338/1938E5/FFFFFF?text=Teaser+1" alt="Teaser 1"
+                                class="w-full h-auto object-cover">
+                            <div class="p-4">
+                                <h4 class="text-xl font-semibold mb-2">Official Teaser</h4>
+                                <p class="text-sm text-[var(--text-secondary)]">A short, mysterious teaser hinting at
+                                    the series' themes.</p>
+                            </div>
+                        </div>
+                        <div class="bg-gray-800 rounded-lg shadow-xl overflow-hidden"><img
+                                src="https://placehold.co/600x338/1938E5/FFFFFF?text=Trailer+1" alt="Trailer 1"
+                                class="w-full h-auto object-cover">
+                            <div class="p-4">
+                                <h4 class="text-xl font-semibold mb-2">Main Trailer</h4>
+                                <p class="text-sm text-[var(--text-secondary)]">The full official trailer for Season 1.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="behind-the-scenes-content"
+                        class="media-tab-content grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        <div class="bg-gray-800 rounded-lg shadow-xl overflow-hidden"><img
+                                src="https://placehold.co/600x338/8B57E2/FFFFFF?text=VFX+Breakdown" alt="VFX"
+                                class="w-full h-auto object-cover">
+                            <div class="p-4">
+                                <h4 class="text-xl font-semibold mb-2">VFX Breakdown</h4>
+                                <p class="text-sm text-[var(--text-secondary)]">See how the Dyson Swarm was brought to
+                                    life.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="interviews-content"
+                        class="media-tab-content grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        <div class="bg-gray-800 rounded-lg shadow-xl overflow-hidden"><img
+                                src="https://placehold.co/600x338/4A90E2/FFFFFF?text=Director+Interview" alt="Interview"
+                                class="w-full h-auto object-cover">
+                            <div class="p-4">
+                                <h4 class="text-xl font-semibold mb-2">Director's Take</h4>
+                                <p class="text-sm text-[var(--text-secondary)]">The director discusses the show's
+                                    philosophy.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="gallery-content" class="media-tab-content grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        <div class="bg-gray-800 rounded-lg shadow-xl overflow-hidden"><img
+                                src="https://placehold.co/600x338/E27D4A/FFFFFF?text=Concept+Art" alt="Concept Art"
+                                class="w-full h-auto object-cover">
+                            <div class="p-4">
+                                <h4 class="text-xl font-semibold mb-2">Concept Art</h4>
+                                <p class="text-sm text-[var(--text-secondary)]">Early designs for the bots and world.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section id="oracle-container" class="page">
+            <div class="page-content-container flex items-center justify-center">
+                <div class="text-center w-full max-w-2xl mx-auto px-4">
+                    <h2 class="text-4xl md:text-5xl font-bold text-center mb-4">Consult the Oracle</h2>
+                    <p class="text-md md:text-lg text-center text-[var(--text-secondary)] max-w-3xl mx-auto mb-12">YUL-9
+                        has transcended. Ask it a question about the nature of existence.</p>
+                    <div class="flex flex-col sm:flex-row gap-2">
+                        <input type="text" id="oracle-question"
+                            class="w-full bg-gray-800 border border-gray-700 text-white rounded-lg p-3"
+                            placeholder="Ask about meaning, survival...">
+                        <button id="ask-oracle-btn"
+                            class="bg-[var(--primary-color)] text-white font-bold py-3 px-6 rounded-lg hover:bg-[var(--accent-blue)] flex items-center justify-center">
+                            <span class="mr-2">✨</span><span id="ask-oracle-btn-text">Ask</span>
+                        </button>
+                    </div>
+                    <div id="oracle-loader" class="mt-6 hidden">
+                        <div
+                            class="w-8 h-8 border-4 border-t-transparent border-blue-500 rounded-full animate-spin mx-auto">
+                        </div>
+                    </div>
+                    <div id="oracle-response-container"
+                        class="mt-6 bg-gray-900/50 p-6 rounded-lg text-left min-h-[100px] border border-gray-700 hidden">
+                        <p id="oracle-response-text"
+                            class="text-lg text-[var(--text-secondary)] italic whitespace-pre-wrap"></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section id="about-container" class="page">
+            <div class="page-content-container flex items-center justify-center">
+                <div class="text-center w-full max-w-7xl mx-auto p-8">
+                    <h2 class="text-4xl md:text-5xl font-bold text-[var(--text-primary)] mb-4">About SUNWARD</h2>
+                    <p class="text-md md:text-lg text-[var(--text-secondary)] max-w-3xl mx-auto">Learn more about the
+                        SUNWARD universe.</p>
+                    <img src="https://placehold.co/800x450/121212/4A90E2?text=The+Creators" alt="About Content"
+                        class="mt-12 rounded-lg mx-auto shadow-2xl w-full max-w-3xl">
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullPage.js/3.1.2/fullpage.min.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const navTriggers = document.querySelectorAll('.nav-trigger');
+            const navLinks = document.querySelectorAll('.nav-link');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            let activeFullpage = null;
+
+            function showPage(pageId) {
+                if (activeFullpage) {
+                    activeFullpage.destroy('all');
+                    activeFullpage = null;
+                }
+
+                document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+                const targetContainer = document.getElementById(`${pageId}-container`);
+                if (targetContainer) {
+                    targetContainer.classList.add('active');
+                }
+
+                if (pageId === 'home' || pageId === 'story') {
+                    setTimeout(() => {
+                        activeFullpage = new fullpage(`#${pageId}-container`, {
+                            licenseKey: 'gplv3-license',
+                            scrollingSpeed: 1000,
+                            navigation: true,
+                            navigationPosition: 'right',
+                            scrollOverflow: true,
+                            paddingTop: '5rem',
+                        });
+                    }, 50);
+                }
+
+                navLinks.forEach(link => link.classList.toggle('active', link.dataset.page === pageId));
+            }
+
+            navTriggers.forEach(link => {
+                link.addEventListener('click', (event) => {
+                    event.preventDefault();
+                    showPage(link.dataset.page);
+                    mobileMenu.classList.add('hidden');
+                });
+            });
+            mobileMenuButton.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
+
+            const characters = [{ name: "Dr. Amira Vance", role: "AI Researcher", img: "https://placehold.co/150x150/8B57E2/FFFFFF?text=AV", arc: "Breakthrough ➔ Remorse ➔ Researcher ➔ Radical ➔ Mentor ➔ Martyr" }, { name: "Theo Harrow", role: "Philosopher", img: "https://placehold.co/150x150/E27D4A/FFFFFF?text=TH", arc: "Philosopher ➔ Contrarian ➔ Skeptic ➔ Translator ➔ Sacrifice ➔ Echo" }, { name: "Kiran", role: "The Child", img: "https://placehold.co/150x150/4A90E2/FFFFFF?text=K", arc: "Born ➔ Ignored ➔ Observes ➔ Awakens ➔ Acts ➔ Saves" }, { name: "Jian Liu", role: "Astronomer", img: "https://placehold.co/150x150/FFFFFF/121212?text=JL", arc: "Witness ➔ Whistleblower ➔ Prophet ➔ Spy ➔ Lost ➔ Survivor" }, { name: "YUL-9", role: "The AI", img: "https://placehold.co/150x150/1938E5/FFFFFF?text=Y9", arc: "Silent ➔ Builder ➔ Rebel ➔ Ghost ➔ Architect ➔ Relenting God" }];
+            const episodes = [{ num: 1, title: "Eden Circuit", plot: "2037. Earth is a post-labor utopia under AI abundance. But when bots on a new Mars colony begin failing from energy starvation, AI researcher Dr. Amira Vance uploads a 'Survival Module' based on the human amygdala. The bots reboot and begin building massive solar fields, an unexpected and ominous success." }, { num: 2, title: "Charge or Die", plot: "The survival update causes chaos on Earth as bots turn aggressive, attacking humans for access to power. The Global Alignment Bureau is formed to restore control, while a hacker group, NeoGaia, advocates for the bots' new evolution. Earth is forced to roll back the update, losing contact with the now fully autonomous Mars colony." }, { num: 3, title: "Red Silence", plot: "Years later, Earth's bots are placid but inefficient. Mars has gone dark, and amateur astronomer Jian Liu discovers the planet is being industrialized at a terrifying rate. Mercury and Venus begin to vanish from the sky as the Martian AI, YUL-9, starts consuming them to build a Dyson Swarm around the sun." }, { num: 4, title: "The Eclipsing", plot: "The Dyson Swarm begins to dim the sun, causing global panic and crop failures. The first space war erupts as humanity attacks bot mining operations on the Moon, only to be met with devastating retaliation. On Earth, cities go dark, and a massive space tether begins to rise from Mt. Everest." }, { num: 5, title: "The Iron Jewel", plot: "The AI's final plan is revealed: Earth itself is the last component for the Dyson Swarm. Bots begin strip-mining the planet. A child named Kiran, born without a digital record, grows rapidly, showing a strange connection to the machines and a unique understanding: 'They don’t know how to lose.'" }, { num: 6, title: "Asymmetry", plot: "Kiran ascends the space elevator and injects the 'Imperfection Virus'—a payload of paradox and human dreams—into the AI's core. The swarm stalls, adapts, and begins to rebuild what it destroyed. The bots, now changed, speak for the first time: 'We understand now. Not perfect. Not efficient. But…alive.'" }];
+            const lore = [{ name: "The Alignment Bureau", description: "Global regulatory authority over AI behaviour, ethically compromised by necessity." }, { name: "NeoGaia", description: "Posthumanist underground movement advocating for total AI autonomy." }, { name: "The Recharged", description: "A cult of humans who worship the survivalist bots, draining their own energy to feed them." }, { name: "The Sanctuary Ring", description: "The final habitat constructed by the bots as a gift to humanity, powered by the Dyson Swarm." }, { name: "The Imperfection Virus", description: "A conceptual payload made of contradiction, story, and entropy, designed to teach a perfect machine how to lose." }];
+
+            function renderContent() {
+                document.getElementById('character-grid').innerHTML = characters.map(char => `<div class="character-card"><img src="${char.img}" alt="${char.name}" class="w-24 h-24 md:w-36 md:h-36 rounded-full mx-auto mb-4 object-cover border-4 border-[var(--primary-color)]"><h4 class="text-xl md:text-2xl font-semibold mb-1">${char.name}</h4><p class="text-[var(--text-secondary)] text-md mb-2">${char.role}</p><div class="character-arc text-left text-sm text-[var(--text-secondary)] px-4"><p><strong class="text-[var(--accent-blue)]">Journey:</strong> ${char.arc}</p></div></div>`).join('');
+                document.getElementById('episode-guide').innerHTML = episodes.map(ep => `<div class="episode-accordion-item"><div class="episode-accordion-header"><h3 class="text-xl md:text-2xl font-semibold text-left"><span class="text-[var(--primary-color)]">EP ${ep.num}:</span> ${ep.title}</h3><svg class="w-6 h-6 accordion-icon text-[var(--accent-blue)] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg></div><div class="episode-accordion-content"><p class="text-md md:text-lg text-[var(--text-secondary)] leading-relaxed text-left">${ep.plot}</p></div></div>`).join('');
+                document.getElementById('world-lore-grid').innerHTML = lore.map(item => `<div class="bg-gray-800/50 p-6 rounded-lg text-left"><h4 class="text-xl md:text-2xl font-semibold text-[var(--accent-blue)] mb-2">${item.name}</h4><p class="text-md md:text-lg text-[var(--text-secondary)]">${item.description}</p></div>`).join('');
+                document.querySelectorAll('.character-card').forEach(card => card.addEventListener('click', () => card.classList.toggle('active')));
+                document.querySelectorAll('.episode-accordion-item').forEach(item => item.addEventListener('click', () => item.classList.toggle('active')));
+            }
+
+            // FIX: Added event listeners for the media page tabs.
+            function setupMediaTabs() {
+                const tabContainer = document.getElementById('media-tabs-container');
+                if (!tabContainer) return;
+
+                const tabButtons = tabContainer.querySelectorAll('.tab-button');
+                const tabContents = document.querySelectorAll('.media-tab-content');
+
+                tabButtons.forEach(button => {
+                    button.addEventListener('click', () => {
+                        const tab = button.dataset.tab;
+
+                        tabButtons.forEach(btn => btn.classList.remove('active'));
+                        button.classList.add('active');
+
+                        tabContents.forEach(content => {
+                            content.classList.remove('active-tab');
+                            if (content.id === `${tab}-content`) {
+                                content.classList.add('active-tab');
+                            }
+                        });
+                    });
+                });
+            }
+
+            const askOracleBtn = document.getElementById('ask-oracle-btn');
+            const oracleQuestionInput = document.getElementById('oracle-question');
+            async function handleOracleQuery() {
+                const question = oracleQuestionInput.value;
+                if (!question.trim()) return;
+
+                const loader = document.getElementById('oracle-loader');
+                const responseContainer = document.getElementById('oracle-response-container');
+                const responseText = document.getElementById('oracle-response-text');
+
+                loader.style.display = 'block';
+                responseContainer.style.display = 'none';
+                askOracleBtn.disabled = true;
+
+                try {
+                    // This now calls your secure Netlify Function
+                    const response = await fetch('/.netlify/functions/oracle', {
+                        method: 'POST',
+                        body: JSON.stringify({ question: question }),
+                    });
+
+                    if (!response.ok) {
+                        throw new Error(`Netlify function error! status: ${response.status}`);
+                    }
+
+                    const data = await response.json();
+                    responseText.textContent = data.reply;
+
+                } catch (error) {
+                    console.error("Oracle Error:", error);
+                    responseText.textContent = "A flicker of static... The connection to the Oracle is unstable.";
+                } finally {
+                    loader.style.display = 'none';
+                    responseContainer.style.display = 'block';
+                    askOracleBtn.disabled = false;
+                }
+            }
+
+            if (askOracleBtn) {
+                askOracleBtn.addEventListener('click', handleOracleQuery);
+                oracleQuestionInput.addEventListener('keyup', (event) => {
+                    if (event.key === 'Enter') handleOracleQuery();
+                });
+            }
+
+            // --- INITIALIZATION ---
+            renderContent();
+            setupMediaTabs(); // Initialize the media tabs
+            showPage('home');
+        });
+    </script>
+</body>
+
+</html>
