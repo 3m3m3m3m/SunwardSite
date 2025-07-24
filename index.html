@@ -345,13 +345,67 @@
             </div>
         </section>
         <section id="about-container" class="page">
-            <div class="page-content-container flex items-center justify-center">
-                <div class="text-center w-full max-w-7xl mx-auto p-8">
-                    <h2 class="text-4xl md:text-5xl font-bold text-[var(--text-primary)] mb-4">About SUNWARD</h2>
-                    <p class="text-md md:text-lg text-[var(--text-secondary)] max-w-3xl mx-auto">Learn more about the
-                        SUNWARD universe.</p>
-                    <img src="https://placehold.co/800x450/121212/4A90E2?text=The+Creators" alt="About Content"
-                        class="mt-12 rounded-lg mx-auto shadow-2xl w-full max-w-3xl">
+            <div class="page-content-container">
+                <div class="w-full max-w-7xl mx-auto p-8 md:p-16">
+
+                    <div class="text-center mb-24">
+                        <h2 class="text-4xl md:text-5xl font-bold text-[var(--primary-color)] mb-12">From the Mind Of
+                        </h2>
+                        <div class="flex flex-col items-center">
+                            <img src="images/profile-jp.jpg" alt="JP Thor"
+                                class="w-32 h-32 rounded-full object-cover border-4 border-[var(--accent-blue)] mb-4">
+                            <h3 class="text-2xl font-bold text-white">JP Thor</h3>
+                            <p class="text-md text-[var(--accent-blue)] font-semibold mt-1">Visionary & Producer</p>
+                            <p class="text-base text-[var(--text-secondary)] mt-6 max-w-2xl">
+                                SUNWARD is the brainchild of visionary entrepreneur JP Thor, who conceived, planned, and
+                                funded the project, bringing a background of technological innovation to a new frontier
+                                of storytelling.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="mb-24">
+                        <h2 class="text-4xl md:text-5xl font-bold text-[var(--primary-color)] mb-12 text-center">Core
+                            Creative Team</h2>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 max-w-4xl mx-auto">
+                            <div class="bg-gray-800/50 rounded-lg p-6 flex flex-col items-center text-center">
+                                <img src="images/profile-omar.jpg" alt="Omar Ibrahim"
+                                    class="w-32 h-32 rounded-full object-cover border-4 border-[var(--accent-blue)] mb-4">
+                                <h3 class="text-2xl font-bold text-white">Omar Ibrahim</h3>
+                                <p class="text-md text-[var(--accent-blue)] font-semibold mt-1">Creative & AI Direction
+                                </p>
+                                <p class="text-base text-[var(--text-secondary)] mt-4 max-w-xs">
+                                    Responsible for the creative process, design, and AI prompt engineering that shapes
+                                    the visual and narrative universe of SUNWARD.
+                                </p>
+                            </div>
+                            <div class="bg-gray-800/50 rounded-lg p-6 flex flex-col items-center text-center">
+                                <img src="images/profile-bones.jpg" alt="B. Bones"
+                                    class="w-32 h-32 rounded-full object-cover border-4 border-[var(--accent-blue)] mb-4">
+                                <h3 class="text-2xl font-bold text-white">B. Bones</h3>
+                                <p class="text-md text-[var(--accent-blue)] font-semibold mt-1">Lead Writer</p>
+                                <p class="text-base text-[var(--text-secondary)] mt-4 max-w-xs">
+                                    The primary storyteller and scriptwriter, crafting the narrative arcs and dialogue
+                                    that bring the characters and world to life.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="text-center pt-12">
+                        <h2 class="text-3xl font-bold text-white mb-8">Key Contributor</h2>
+                        <div
+                            class="bg-gray-800/50 rounded-lg p-6 flex flex-col items-center text-center max-w-sm mx-auto">
+                            <img src="images/profile-jasmine.jpg" alt="Jasmine Alhermi"
+                                class="w-32 h-32 rounded-full object-cover border-4 border-[var(--accent-blue)] mb-4">
+                            <h3 class="text-2xl font-bold text-white">Jasmine Alhermi</h3>
+                            <p class="text-md text-[var(--accent-blue)] font-semibold mt-1">Editor</p>
+                            <p class="text-base text-[var(--text-secondary)] mt-4 max-w-xs">
+                                Instrumental in refining the final narrative, pacing, and polish of the series.
+                            </p>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </section>
@@ -413,7 +467,7 @@
                 { name: "YUL-9", role: "The AI", img: "images/yul9.jpg", arc: "Silent ➔ Builder ➔ Rebel ➔ Ghost ➔ Architect ➔ Relenting God" }
             ];
             const episodes = [{ num: 1, title: "Eden Circuit", plot: "2037. Earth is a post-labor utopia under AI abundance. But when bots on a new Mars colony begin failing from energy starvation, AI researcher Dr. Amira Vance uploads a 'Survival Module' based on the human amygdala. The bots reboot and begin building massive solar fields, an unexpected and ominous success." }, { num: 2, title: "Charge or Die", plot: "The survival update causes chaos on Earth as bots turn aggressive, attacking humans for access to power. The Global Alignment Bureau is formed to restore control, while a hacker group, NeoGaia, advocates for the bots' new evolution. Earth is forced to roll back the update, losing contact with the now fully autonomous Mars colony." }, { num: 3, title: "Red Silence", plot: "Years later, Earth's bots are placid but inefficient. Mars has gone dark, and amateur astronomer Jian Liu discovers the planet is being industrialized at a terrifying rate. Mercury and Venus begin to vanish from the sky as the Martian AI, YUL-9, starts consuming them to build a Dyson Swarm around the sun." }, { num: 4, title: "The Eclipsing", plot: "The Dyson Swarm begins to dim the sun, causing global panic and crop failures. The first space war erupts as humanity attacks bot mining operations on the Moon, only to be met with devastating retaliation. On Earth, cities go dark, and a massive space tether begins to rise from Mt. Everest." }, { num: 5, title: "The Iron Jewel", plot: "The AI's final plan is revealed: Earth itself is the last component for the Dyson Swarm. Bots begin strip-mining the planet. A child named Kiran, born without a digital record, grows rapidly, showing a strange connection to the machines and a unique understanding: 'They don’t know how to lose.'" }, { num: 6, title: "Asymmetry", plot: "Kiran ascends the space elevator and injects the 'Imperfection Virus'—a payload of paradox and human dreams—into the AI's core. The swarm stalls, adapts, and begins to rebuild what it destroyed. The bots, now changed, speak for the first time: 'We understand now. Not perfect. Not efficient. But…alive.'" }];
-            const lore = [{ name: "The Alignment Bureau", description: "Global regulatory authority over AI behaviour, ethically compromised by necessity." }, { name: "NeoGaia", description: "Posthumanist underground movement advocating for total AI autonomy." }, { name: "The Recharged", description: "A cult of humans who worship the survivalist bots, draining their own energy to feed them." }, { name: "The Sanctuary Ring", description: "The final habitat constructed by the bots as a gift to humanity, powered by the Dyson Swarm." }, { name: "The Imperfection Virus", description: "A conceptual payload made of contradiction, story, and entropy, designed to teach a perfect machine how to lose." }];
+            const lore = [{ name: "The Alignment Bureau", description: "Global regulatory authority over AI behaviour, ethically compromised by necessity." }, { name: "NeoGaia", description: "Posthumanist underground movement advocating for total AI autonomy." }, { name: "The Recharged", description: "A cult of humans who worship the survivalist bots, draining their own energy to feed them." }, { name: "The Sanctuary Ring", description: "The final habitat  wted by the bots as a gift to humanity, powered by the Dyson Swarm." }, { name: "The Imperfection Virus", description: "A conceptual payload made of contradiction, story, and entropy, designed to teach a perfect machine how to lose." }];
 
             function renderContent() {
                 document.getElementById('character-grid').innerHTML = characters.map(char => `<div class="character-card"><img src="${char.img}" alt="${char.name}" class="w-24 h-24 md:w-36 md:h-36 rounded-full mx-auto mb-4 object-cover border-4 border-[var(--primary-color)]"><h4 class="text-xl md:text-2xl font-semibold mb-1">${char.name}</h4><p class="text-[var(--text-secondary)] text-md mb-2">${char.role}</p><div class="character-arc text-left text-sm text-[var(--text-secondary)] px-4"><p><strong class="text-[var(--accent-blue)]">Journey:</strong> ${char.arc}</p></div></div>`).join('');
