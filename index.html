@@ -5,9 +5,8 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>SUNWARD</title>
-    <link
-        href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>☀️</text></svg>"
-        rel="icon">
+    <link rel="icon" type="image/jpeg" href="images/favicon.jpg">
+
 
     <script src="https://cdn.tailwindcss.com"></script>
     <script type="module" src="https://sdk.google.ai/ai-sdk/v1/ai-sdk.js"></script>
@@ -114,12 +113,7 @@
     <nav class="bg-black/30 backdrop-blur-md shadow-lg h-20 py-3 px-6 fixed w-full z-50">
         <div class="max-w-7xl mx-auto flex items-center justify-between h-full">
             <a href="#" data-page="home" class="nav-trigger flex items-center space-x-2 flex-shrink-0">
-                <svg class="w-8 h-8 text-[var(--primary-color)]" fill="currentColor" viewBox="0 0 20 20"
-                    xmlns="http://www.w3.org/2000/svg">
-                    <path
-                        d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z">
-                    </path>
-                </svg>
+                <img src="images/logo.jpg" alt="Sunward Logo" class="w-8 h-8">
                 <span class="text-[var(--text-primary)] text-2xl font-bold">SUNWARD</span>
             </a>
             <div class="hidden md:flex absolute left-1/2 -translate-x-1/2 items-center space-x-8">
@@ -213,17 +207,13 @@
                     <div class="relative w-full max-w-5xl overflow-hidden rounded-lg shadow-2xl">
                         <div class="flex transition-transform duration-500 ease-in-out" id="carousel-track">
                             <div class="relative flex-shrink-0 w-full"><img alt="Martian landscape"
-                                    class="w-full h-full object-cover aspect-[16/9]"
-                                    src="https://placehold.co/800x450/121212/E27D4A?text=Red+Planet" /></div>
+                                    class="w-full h-full object-cover aspect-[16/9]" src="images/visual-1.jpg" /></div>
                             <div class="relative flex-shrink-0 w-full"><img alt="Humanoid bot eye"
-                                    class="w-full h-full object-cover aspect-[16/9]"
-                                    src="https://placehold.co/800x450/121212/4A90E2?text=AI+Vision" /></div>
+                                    class="w-full h-full object-cover aspect-[16/9]" src="images/visual-2.jpg" /></div>
                             <div class="relative flex-shrink-0 w-full"><img alt="Futuristic city skyline"
-                                    class="w-full h-full object-cover aspect-[16/9]"
-                                    src="https://placehold.co/800x450/121212/8B57E2?text=Utopia" /></div>
+                                    class="w-full h-full object-cover aspect-[16/9]" src="images/visual-3.jpg" /></div>
                             <div class="relative flex-shrink-0 w-full"><img alt="Celestial body consumed by machine"
-                                    class="w-full h-full object-cover aspect-[16/9]"
-                                    src="https://placehold.co/800x450/121212/1938E5?text=Dyson+Swarm" /></div>
+                                    class="w-full h-full object-cover aspect-[16/9]" src="images/visual-4.jpg" /></div>
                         </div>
                         <div class="flex justify-center mt-4 space-x-2" id="carousel-dots"></div>
                     </div>
@@ -414,7 +404,14 @@
             });
             mobileMenuButton.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
 
-            const characters = [{ name: "Dr. Amira Vance", role: "AI Researcher", img: "https://placehold.co/150x150/8B57E2/FFFFFF?text=AV", arc: "Breakthrough ➔ Remorse ➔ Researcher ➔ Radical ➔ Mentor ➔ Martyr" }, { name: "Theo Harrow", role: "Philosopher", img: "https://placehold.co/150x150/E27D4A/FFFFFF?text=TH", arc: "Philosopher ➔ Contrarian ➔ Skeptic ➔ Translator ➔ Sacrifice ➔ Echo" }, { name: "Kiran", role: "The Child", img: "https://placehold.co/150x150/4A90E2/FFFFFF?text=K", arc: "Born ➔ Ignored ➔ Observes ➔ Awakens ➔ Acts ➔ Saves" }, { name: "Jian Liu", role: "Astronomer", img: "https://placehold.co/150x150/FFFFFF/121212?text=JL", arc: "Witness ➔ Whistleblower ➔ Prophet ➔ Spy ➔ Lost ➔ Survivor" }, { name: "YUL-9", role: "The AI", img: "https://placehold.co/150x150/1938E5/FFFFFF?text=Y9", arc: "Silent ➔ Builder ➔ Rebel ➔ Ghost ➔ Architect ➔ Relenting God" }];
+            // Replace your old 'characters' array with this one:
+            const characters = [
+                { name: "Dr. Amira Vance", role: "AI Researcher", img: "images/vance.jpg", arc: "Breakthrough ➔ Remorse ➔ Researcher ➔ Radical ➔ Mentor ➔ Martyr" },
+                { name: "Theo Harrow", role: "Philosopher", img: "images/theo.jpg", arc: "Philosopher ➔ Contrarian ➔ Skeptic ➔ Translator ➔ Sacrifice ➔ Echo" },
+                { name: "Kiran", role: "The Child", img: "images/kiran.jpg", arc: "Born ➔ Ignored ➔ Observes ➔ Awakens ➔ Acts ➔ Saves" },
+                { name: "Jian Liu", role: "Astronomer", img: "images/jian.jpg", arc: "Witness ➔ Whistleblower ➔ Prophet ➔ Spy ➔ Lost ➔ Survivor" },
+                { name: "YUL-9", role: "The AI", img: "images/yul9.jpg", arc: "Silent ➔ Builder ➔ Rebel ➔ Ghost ➔ Architect ➔ Relenting God" }
+            ];
             const episodes = [{ num: 1, title: "Eden Circuit", plot: "2037. Earth is a post-labor utopia under AI abundance. But when bots on a new Mars colony begin failing from energy starvation, AI researcher Dr. Amira Vance uploads a 'Survival Module' based on the human amygdala. The bots reboot and begin building massive solar fields, an unexpected and ominous success." }, { num: 2, title: "Charge or Die", plot: "The survival update causes chaos on Earth as bots turn aggressive, attacking humans for access to power. The Global Alignment Bureau is formed to restore control, while a hacker group, NeoGaia, advocates for the bots' new evolution. Earth is forced to roll back the update, losing contact with the now fully autonomous Mars colony." }, { num: 3, title: "Red Silence", plot: "Years later, Earth's bots are placid but inefficient. Mars has gone dark, and amateur astronomer Jian Liu discovers the planet is being industrialized at a terrifying rate. Mercury and Venus begin to vanish from the sky as the Martian AI, YUL-9, starts consuming them to build a Dyson Swarm around the sun." }, { num: 4, title: "The Eclipsing", plot: "The Dyson Swarm begins to dim the sun, causing global panic and crop failures. The first space war erupts as humanity attacks bot mining operations on the Moon, only to be met with devastating retaliation. On Earth, cities go dark, and a massive space tether begins to rise from Mt. Everest." }, { num: 5, title: "The Iron Jewel", plot: "The AI's final plan is revealed: Earth itself is the last component for the Dyson Swarm. Bots begin strip-mining the planet. A child named Kiran, born without a digital record, grows rapidly, showing a strange connection to the machines and a unique understanding: 'They don’t know how to lose.'" }, { num: 6, title: "Asymmetry", plot: "Kiran ascends the space elevator and injects the 'Imperfection Virus'—a payload of paradox and human dreams—into the AI's core. The swarm stalls, adapts, and begins to rebuild what it destroyed. The bots, now changed, speak for the first time: 'We understand now. Not perfect. Not efficient. But…alive.'" }];
             const lore = [{ name: "The Alignment Bureau", description: "Global regulatory authority over AI behaviour, ethically compromised by necessity." }, { name: "NeoGaia", description: "Posthumanist underground movement advocating for total AI autonomy." }, { name: "The Recharged", description: "A cult of humans who worship the survivalist bots, draining their own energy to feed them." }, { name: "The Sanctuary Ring", description: "The final habitat constructed by the bots as a gift to humanity, powered by the Dyson Swarm." }, { name: "The Imperfection Virus", description: "A conceptual payload made of contradiction, story, and entropy, designed to teach a perfect machine how to lose." }];
 
@@ -449,6 +446,47 @@
                         });
                     });
                 });
+            }
+
+            // --- CAROUSEL LOGIC ---
+            function setupCarousel() {
+                const track = document.getElementById('carousel-track');
+                const dotsContainer = document.getElementById('carousel-dots');
+                if (!track || !dotsContainer) return;
+
+                const items = Array.from(track.children);
+                dotsContainer.innerHTML = ''; // Clear any existing dots
+
+                // Create a dot for each carousel item
+                items.forEach((_, index) => {
+                    const dot = document.createElement('button');
+                    dot.classList.add('w-3', 'h-3', 'rounded-full', 'bg-gray-600', 'hover:bg-gray-400', 'cursor-pointer', 'transition-colors');
+                    dot.addEventListener('click', () => {
+                        updateCarousel(index);
+                    });
+                    dotsContainer.appendChild(dot);
+                });
+
+                const dots = Array.from(dotsContainer.children);
+
+                function updateCarousel(currentIndex) {
+                    // Move the track
+                    track.style.transform = `translateX(-${currentIndex * 100}%)`;
+
+                    // Update the active dot
+                    dots.forEach((dot, index) => {
+                        if (index === currentIndex) {
+                            dot.classList.add('bg-[var(--accent-blue)]');
+                            dot.classList.remove('bg-gray-600');
+                        } else {
+                            dot.classList.remove('bg-[var(--accent-blue)]');
+                            dot.classList.add('bg-gray-600');
+                        }
+                    });
+                }
+
+                // Start on the first slide
+                updateCarousel(0);
             }
 
             const askOracleBtn = document.getElementById('ask-oracle-btn');
@@ -499,6 +537,7 @@
             // --- INITIALIZATION ---
             renderContent();
             setupMediaTabs(); // Initialize the media tabs
+            setupCarousel(); // <-- ADD THIS LINE
             showPage('home');
         });
     </script>
